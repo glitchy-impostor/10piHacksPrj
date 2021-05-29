@@ -1,0 +1,94 @@
+{% extends 'boiler_plate.html' %}
+
+{% block body %}
+
+  <section class="text-gray-600 body-font">
+    <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+    <div class="text-center lg:w-2/3 w-full">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{task_name}}</h1>
+      <h3 id="status-ele" class="text-red-900">Status: NOT STARTED</h3>
+      <h3 class="text-gray-900">Total Duration Of Task: {{task_duration}}</h3>
+      <h3 class="text-gray-900">Task To Be Repeated On: {{task_repitition}}</h3>
+      <div class="flex justify-center">
+        <button onclick="start_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Start Task</button>
+        <button onclick="pause_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Pause Task</button>
+        <button onclick="resume_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Resume Task</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <a href="/" id="clickable-link" hidden />
+  <script>
+    let id = window.location.pathname.replace('/task/', '');
+    console.log(id, 'id')
+    function start_task(){
+      $.ajax({
+        url: '/api/start/task',
+        type: 'POST',
+        data: {'id': id},
+        success: function(res){
+          if(res.conf == 0){
+            document.getElementById('status-ele').innerHTML = 'Status: Started!';
+            document.getElementById('status-ele').className = 'text-green-500';
+          }else if(res.conf == 1){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 2){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 3){
+            alert('TASK HAS ALREADY BEEN STARTED!');
+          }
+        }
+      })
+    }
+    function pause_task(){
+      $.ajax({
+        url: '/api/pause/task',
+        type: 'POST',
+        data: {'id': id},
+        success: function(res){
+          if(res.conf == 0){
+            document.getElementById('status-ele').innerHTML = 'Status: Paused!';
+            document.getElementById('status-ele').className = 'text-red-500';
+          }else if(res.conf == 1){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 2){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 3){
+            alert('TASK HAS ALREADY BEEN PAUSED!');
+          }else if(res.conf == 4){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }
+        }
+      })
+    }
+    function resume_task(){
+      $.ajax({
+        url: '/api/resume/task',
+        type: 'POST',
+        data: {'id': id},
+        success: function(res){
+          if(res.conf == 0){
+            document.getElementById('status-ele').innerHTML = 'Status: Started!';
+            document.getElementById('status-ele').className = 'text-green-500';
+          }else if(res.conf == 1){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 2){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }else if(res.conf == 3){
+            alert('TASK HAS NOT BEEN STARTED!');
+          }else if(res.conf == 4){
+            alert('TASK IS GOING ON!')
+          }
+        }
+      })
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'boiler_plate.html' %}
+
+{% block body %}
+
+  <ol>
+    {% for task in tasks %}
+      <li> name: {{task.name}} duration: {{task.duration}} repitition: {{task.repitition}} </li>
+    {% endfor %}
+  </ol>
+  
+
+{% endblock %}

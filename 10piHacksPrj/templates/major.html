@@ -2,11 +2,13 @@
 
 {% block body %}
 
-  25 percentile: {{json.Message['25th Percentile']}}
-  75th Percentile: {{json.Message['75th Percentile']}}
-  Median Income: {{json.Message['Median Income']}}
+  <h1>{{json.Message['Major']}}</h1>
+  <h2>Income</h2>
+  <h3>25 percentile: {{json.Message['25th Percentile']}}</h3>
+  <h3>75th Percentile: {{json.Message['75th Percentile']}}</h3>
+  <h3>Median Income: {{json.Message['Median Income']}}</h3>
 
-  Top 5 Colleges: {{json.Message['Top 5 Colleges']}}
+  <h2>Top 5 Colleges: {{json.Message['Top 5 Colleges']}}</h2>
 
   
 {% endblock %}

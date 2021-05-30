@@ -7,6 +7,7 @@
     width: 300px;
     height: 100px;
     border: 1px solid blue;
+    margin: 5px;
   }
   body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -23,13 +24,53 @@
     {% endfor %}
   </ol>
 
+  <h1>Today's Tasks</h1>
+
 
   {% for task in tasks %}
     <div class = "box">
       <h2>{{task.name}}</h2>
-      <h3>Time: {{task.duration}} Days: {{task.repitition}}</h3>
+      <h3>Time: {{task.duration}} </h3>
+      <h3>Days: {{task.repitition}}</h3>
     </div>
   {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   
 
 {% endblock %}

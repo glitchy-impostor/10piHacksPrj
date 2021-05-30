@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session, redirect, jsonify, s
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_, and_
 import random, math, time, threading, json
+from datetime import datetime
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -35,7 +36,48 @@ def index():
     if 'username' in session:
         username = session['username']
         user_tasks = tasks.query.filter_by(username=username).all()
-        return render_template('index.html', tasks=user_tasks)
+        list = []
+        for task in user_tasks:
+            array = task.repitition.split('#')[:-1]
+
+        
+
+            date = datetime.today().weekday()
+
+
+            numToDay = {
+                0 : "Mo",
+                1 : "Tu" ,
+                2 : "We",
+                3 : "Th",
+                4 : "Fr",
+                5 : "Sa",
+                6 : "Su"
+            }
+
+
+            #day stores the today's day.
+            day = numToDay.get(date)
+            print("Todays day is " +day)
+
+            print(array)
+
+
+            count = 0
+            for x in array:
+                print("x = " + x)
+                if x == day:
+                    #This task has to be done today.
+                    count = count + 1
+
+            display = False
+            if(count > 0):
+                list.append(task)
+
+            print(display)
+
+
+        return render_template('index.html', tasks=list)
     else:
         return redirect('/login')
 

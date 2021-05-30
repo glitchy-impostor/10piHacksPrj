@@ -51,7 +51,7 @@ document.getElementById("time").innerHTML = text;
 
 
 //This part is for the countdown timer.
-var countDownDate = new Date("Jul 25, 2021 " + estimatedTime.getTime).getTime();
+var countDownDate = new Date(date.getDate + estimatedTime.getTime).getTime();
 
 var myfunc = setInterval(function(){
     var now = new Date().getTime();

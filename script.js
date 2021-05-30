@@ -61,16 +61,15 @@ var myfunc = setInterval(function(){
     var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
     //Display time.
-    document.getElementById("hours").innerHTML = hours + "h " 
-    document.getElementById("mins").innerHTML = minutes + "m " 
-    document.getElementById("secs").innerHTML = seconds + "s"
+
+    displayTime = []
+    displayTime += hours + "h:"+ minutes + "m:" + seconds + "s";
+    document.getElementById("showTime".innerHTML) = displayTime;
 
     if(timeleft < 0){
-        clearInterval(myfunc)
-        document.getElementById("hours").innerHTML = "" 
-        document.getElementById("mins").innerHTML = ""
-        document.getElementById("secs").innerHTML = ""
-        document.getElementById("end").innerHTML = "TIME UP!!";
+        displayTime = "Time is Up";
+        document.getElementById("showTime".innerHTML) = displayTime;
+
         alert("Time is up!");
     }
 }, 1000)

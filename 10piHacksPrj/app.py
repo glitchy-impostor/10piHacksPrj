@@ -37,6 +37,7 @@ def index():
         username = session['username']
         user_tasks = tasks.query.filter_by(username=username).all()
         list = []
+        upcoming_tasks = []
         for task in user_tasks:
             array = task.repitition.split('#')[:-1]
 
@@ -73,13 +74,74 @@ def index():
             display = False
             if(count > 0):
                 list.append(task)
+            else:
+                upcoming_tasks.append(task)
 
             print(display)
 
 
         return render_template('index.html', tasks=list)
+        
     else:
         return redirect('/login')
+
+
+@app.route('/', methods= ['POST', 'GET'])
+def upcoming_tasks():
+    if 'username' in session:
+        username = session['username']
+        user_tasks = tasks.query.filter_by(username=username).all()
+        list = []
+        upcoming_tasks = []
+        for task in user_tasks:
+            array = task.repitition.split('#')[:-1]
+
+        
+
+            date = datetime.today().weekday()
+
+
+            numToDay = {
+                0 : "Mo",
+                1 : "Tu" ,
+                2 : "We",
+                3 : "Th",
+                4 : "Fr",
+                5 : "Sa",
+                6 : "Su"
+            }
+
+
+            #day stores the today's day.
+            day = numToDay.get(date)
+            print("Todays day is " +day)
+
+            print(array)
+
+
+            count = 0
+            for x in array:
+                print("x = " + x)
+                if x == day:
+                    #This task has to be done today.
+                    count = count + 1
+
+            display = False
+            if(count > 0):
+                list.append(task)
+            else:
+                upcoming_tasks.append(task)
+
+            print(display)
+
+            upcoming = upcoming_tasks
+
+
+        return render_template('index.html', upcoming = upcoming_tasks)
+        
+    else:
+        return redirect('/login')
+
 
 @app.route('/login', methods=['GET'])
 def login():

@@ -18,3 +18,10 @@ Additions were made for top 5 colleges for each major to this data.
 
 `node_modules`
 - Contains node modules used for this project.
+
+`app.py`
+- Web Server based on the flask framework 
+
+`Other resources Used`
+-Tailblocks for front end code.
+

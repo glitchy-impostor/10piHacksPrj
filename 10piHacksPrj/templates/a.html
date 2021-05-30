@@ -1,0 +1,127 @@
+{% extends 'b.html' %}
+
+{% block body %}
+AA
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-col text-center w-full mb-12">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">ADD TASK</h1>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke farm-to-table. Franzen you probably haven't heard of them man bun deep.</p>
+    </div>
+    <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+      <div class="relative flex-grow w-full">
+        <label id="label-task-name" for="task-name" class="leading-7 text-sm text-gray-600">Task Name</label>
+        <input type="text" id="task-name" name="task-name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label id="label-task-duration" for="task-duration" class="leading-7 text-sm text-gray-600">Task Duration [HH:MM:SS]</label>
+        <input type="text" id="task-duration" name="task-duration" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+    </div>
+    <br>
+    <h3 id="selectionRep">Select Repitition Of Your Task</h3>
+    <br>
+    <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+      <div class="relative flex-grow w-full">
+        <label for="task-name" class="leading-7 text-sm text-gray-600">Monday</label>
+        <input type="checkbox" id="mon" name="mon" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Tuesday</label>
+        <input type="checkbox" id="tue" name="tue" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Wednesday</label>
+        <input type="checkbox" id="wed" name="wed" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Thursday</label>
+        <input type="checkbox" id="thu" name="thu" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Friday</label>
+        <input type="checkbox" id="fri" name="fri" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Saturday</label>
+        <input type="checkbox" id="sat" name="sat" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative flex-grow w-full">
+        <label for="task-duration" class="leading-7 text-sm text-gray-600">Sunday</label>
+        <input type="checkbox" id="sun" name="sun" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+    </div>
+    <div class="p-2 w-full">
+      <button onclick="send_data()" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+    </div>
+  </div>
+</section>
+
+<a href="/" id="clickable-link" hidden />
+
+<script>
+  function send_data(){
+    let name = document.getElementById('task-name').value;
+    let duration = document.getElementById('task-duration').value;
+    let mon = document.getElementById('mon').checked;
+    let tue = document.getElementById('tue').checked;
+    let wed = document.getElementById('wed').checked;
+    let thu = document.getElementById('thu').checked;
+    let fri = document.getElementById('fri').checked;
+    let sat = document.getElementById('sat').checked;
+    let sun = document.getElementById('sun').checked;
+    let rep_str = '';
+    if(mon == true){
+      rep_str += 'Mo#'
+    }
+    if(tue == true){
+      rep_str += 'Tu#'
+    }
+    if(wed == true){
+      rep_str += 'We#'
+    }
+    if(thu == true){
+      rep_str += 'Th#'
+    }
+    if(fri == true){
+      rep_str += 'Fr#'
+    }
+    if(sat == true){
+      rep_str += 'Sa#'
+    }
+    if(sun == true){
+      rep_str += 'Su#'
+    }
+    if(name != ''){
+      if(duration.length == 8 && duration.includes(':')){
+        if(rep_str != ''){
+          $.ajax({
+            url: '/api/add/task',
+            type: 'POST',
+            data: {'name': name, 'duration': duration, 'repitition': rep_str},
+            success: function(res){
+              if(res.conf == 0){
+                document.getElementById('clickable-link').href= '/';
+                setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+              }else if(res.conf == 1){
+                document.getElementById('clickable-link').href= '/login';
+                setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+              }
+            }
+          })
+        }else{
+          document.getElementById('selectionRep').innerHTML = 'No Day Selected!!';
+          document.getElementById('selectionRep').className = 'leading-7 text-sm text-red-600';
+        }
+      }else{
+        document.getElementById('label-task-duration').innerHTML = 'Format Of Task Duration Not Correct [HH:MM:SS]';
+        document.getElementById('label-task-duration').className = 'leading-7 text-sm text-red-600';
+      }
+    }else{
+      document.getElementById('label-task-name').innerHTML = 'No Name Given To Task!';
+      document.getElementById('label-task-name').className = 'leading-7 text-sm text-red-600';
+    }
+  }
+</script>
+
+{% endblock %}

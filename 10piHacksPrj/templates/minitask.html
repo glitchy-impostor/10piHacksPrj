@@ -1,0 +1,77 @@
+{% extends 'b.html' %}
+
+{% block body %}
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 pt-10 mx-auto">
+    <div class="flex flex-col text-center w-full mb-20">
+    {% if task.completed == True %}
+    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-green-500">{{task.name}} | Complete</h1>
+    <p class="lg:w-2/3 mx-auto leading-relaxed text-green-300">Due Date - {{task.date}}</p>
+    <p class="lg:w-2/3 mx-auto leading-relaxed text-green-300">Connected To - <a href="/longTermTask/{{task.lognTermTaskId}}">{{name}}</a></p>
+    <p class="leading-relaxed text-base">Estimated Time Required - {{task.estTimeReq}}</p>
+    {% else %}
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">{{task.name}}</h1>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Due Date - {{task.date}}</p>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Connected To - <a href="/longTermTask/{{task.lognTermTaskId}}">{{name}}</a></p>
+      <p class="leading-relaxed text-base">Estimated Time Required - {{task.estTimeReq}}</p>
+    {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-2 mx-auto">
+    <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Routine Tasks</h1>
+    </div>
+    <div class="flex flex-wrap -m-4">
+      {% if send_list|length == 0 %}
+        <h3 class="lg:w-2/3 mx-auto leading-relaxed text-base">NO ROUTINE TASKS PRESENT.. ADD ROUTINE TASKS BELOW!</h3>
+      {% else %}
+      {% for task in send_list %}
+        <div class="xl:w-1/3 md:w-1/2 p-4">
+          <div class="border border-gray-200 p-6 rounded-lg">
+            <!--<div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+              <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>-->
+            <a href="/task/{{task.id}}"><h2 class="text-lg text-gray-900 font-medium title-font mb-2">{{task.name}}</h2></a>
+            <p class="leading-relaxed text-base">Duration-{{task.duration}} | Frequency-{{task.repitition}}</p>
+          </div>
+        </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <button onclick="btn_click();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">ADD ROUTINE TASKS</button>
+    <button onclick="btn_click_completed();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">MINI TASK COMPLETED!</button>
+  </div>
+</section>
+
+<a href="/link/tasks/{{task.id}}" id="clickable-link" hidden />
+
+<script>
+  function btn_click(){
+    document.getElementById('clickable-link').click();
+  }
+  let id = '{{task.id}}'
+  function btn_click_completed(){
+    $.ajax({
+      url: '/api/minitask/completed',
+      type: 'POST',
+      data: {'id': id},
+      success: function(res){
+        if(res.conf == 0){
+          document.getElementById('clickable-link').href= `/longTermTask/${res.longTermTaskId}`;
+          setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+        }else if(res.conf == 1){
+          document.getElementById('clickable-link').href= `/login`;
+          setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+        }
+      }
+    })
+  }
+</script>
+
+{% endblock %}

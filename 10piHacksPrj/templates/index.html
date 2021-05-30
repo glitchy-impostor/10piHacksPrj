@@ -2,11 +2,34 @@
 
 {% block body %}
 
+<style> 
+  .box {
+    width: 300px;
+    height: 100px;
+    border: 1px solid blue;
+  }
+  body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+  }
+  
+  
+  </style>
+
+
   <ol>
     {% for task in tasks %}
       <li> name: {{task.name}} duration: {{task.duration}} repitition: {{task.repitition}} </li>
     {% endfor %}
   </ol>
+
+
+  {% for task in tasks %}
+    <div class = "box">
+      <h2>{{task.name}}</h2>
+      <h3>Time: {{task.duration}} Days: {{task.repitition}}</h3>
+    </div>
+  {% endfor %}
   
 
 {% endblock %}

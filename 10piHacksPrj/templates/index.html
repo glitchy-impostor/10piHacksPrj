@@ -1,86 +1,60 @@
-{% extends 'boiler_plate.html' %}
+
+{% extends 'b.html' %}
 
 {% block body %}
 
-<style> 
-  .box {
-    width: 300px;
-    height: 100px;
-    border: 1px solid blue;
-    margin: 5px;
-  }
-  body{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: white;
-  }
-  
-  
-  </style>
+<style>
+.box {
+  width: 300px;
+  height: 100px;
+  border: 1px solid blue;
+}
+body{
+  /*font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: black;*/
+}
 
 
-  
+</style>
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-1 mx-auto">
+    <div class="flex flex-col text-center w-full mb-2">
+      <div class="flex mx-auto border-2 border-indigo-500 rounded overflow-hidden mt-6">
+        <a href="/today"><button class="py-1 px-4 bg-indigo-500 text-white focus:outline-none">Today's Tasks</button></a>
+        <a href="/all" ><button class="py-1 px-4 focus:outline-none">All Tasks</button></a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="text-gray-600 body-font">
 
-  <h1>Today's Tasks</h1>
-
-
-  
-
-
-
+  <div class="container px-5 pt-8 mx-auto">
+    <div class="flex flex-wrap -m-4">
     {% for task in tasks %}
+      {% if task.last_completed == date %}
       <div class="xl:w-1/3 md:w-1/2 p-4">
-        <div class="border border-gray-200 p-6 rounded-lg">
-          <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
-          </div>
-          <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Name = {{task.name}}</h2>
-          <p class="leading-relaxed text-base">Duration = {{task.duration}} Repitition = {{task.repitition}}</p>
+        <div class="border border-green-500 p-6 rounded-lg">
+          <h2 class="text-lg text-green-500 font-medium title-font mb-2">Name = <a href="/task/{{task.id}}">{{task.name}} | Completed</a></h2>
+          <p class="leading-relaxed text-base">Duration = {{task.duration}} | Repitition = {{task.repitition}}</p>
+          <p class="leading-relaxed text-base">Last Completed - Today</p>
         </div>
       </div>
-    {% endblock %}
-
-  
-    
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
+    {% else %}
+    <div class="xl:w-1/3 md:w-1/2 p-4">
+      <div class="border border-gray-200 p-6 rounded-lg">
+        <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Name = <a href="/task/{{task.id}}">{{task.name}}</a></h2>
+        <p class="leading-relaxed text-base">Duration = {{task.duration}} | Repitition = {{task.repitition}}</p>
+        {% if task.last_completed == 'NONE' %}
+        <p class="leading-relaxed text-base">Last Completed - Never</p>
+        {% else %}
+        <p class="leading-relaxed text-base">Last Completed - {{task.last_completed}}</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+</section>
 
 {% endblock %}

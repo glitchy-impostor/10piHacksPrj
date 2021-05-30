@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+  <title>10 Pi Hacks app</title>
+  <meta charset="UTF-8" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+</head>
+<body>
+  <header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
+        <a href="/login" class="mr-5 hover:text-gray-900">LOGIN</a>
+        <a href="/signup" class="mr-5 hover:text-gray-900">SIGNUP</a>
+        <a href="/logout" class="mr-5 hover:text-gray-900">LOGOUT</a>
+        <a href="/majors" class="hover:text-gray-900">MAJORS</a>
+      </nav>
+      <a class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="ml-3 text-xl">Tailblocks</span>
+      </a>
+      <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
+        <button onclick="btn_click();" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ADD
+          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex mb-4" style="text-align: center">
+    <a id="home" href="/" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Routine Tasks</a>
+    <a id="longTermTasks" href="/show/longTermTasks" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Long Term Tasks</a>
+    <a id="minitasks" href="/show/minitasks" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Mini Tasks</a>
+  </div>
+  {% block body %}
+
+  {% endblock %}
+
+  <a href="/add/task" id="clickable-link" hidden />
+  <script>
+    if(window.location.pathname == '/today' || window.location.pathname == '/all'){
+      document.getElementById('home').className = "flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1";
+      document.getElementById("longTermTasks").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+      document.getElementById("minitasks").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+    }else if(window.location.pathname == '/show/longTermTasks'){
+      document.getElementById('longTermTasks').className = "flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1";
+      document.getElementById("home").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+      document.getElementById("minitasks").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+    }else if(window.location.pathname == '/show/minitasks'){
+      document.getElementById('minitasks').className = "flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1";
+      document.getElementById("longTermTasks").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+      document.getElementById("home").className = "flex-grow border-b-2 border-gray-300 py-2 text-lg px-1";
+    }
+    function btn_click(){
+      if(window.location.pathname == '/today' || window.location.pathname == '/all'){
+        document.getElementById('clickable-link').href="/add/task";
+        setTimeout(function(){document.getElementById('clickable-link').click();},10);
+      }else if(window.location.pathname == '/show/longTermTasks'){
+        document.getElementById('clickable-link').href="/add/longTermTask";
+        setTimeout(function(){document.getElementById('clickable-link').click();},10);
+      }else{
+          setTimeout(function(){document.getElementById('clickable-link').click();},10);
+      }
+    }
+  </script>
+
+
+</body>
+</html>

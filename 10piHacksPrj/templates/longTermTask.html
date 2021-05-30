@@ -1,0 +1,83 @@
+{% extends 'b.html' %}
+
+{% block body %}
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 pt-10 mx-auto">
+    <div class="flex flex-col text-center w-full mb-20">
+      {% if task.completed == True %}
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-green-500">{{task.name}} | Complete</h1>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-green-300">Due Date - {{task.date}}</p>
+      {% else %}
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">{{task.name}}</h1>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Due Date - {{task.date}}</p>
+      {% endif %}
+          <button onclick="btn_click_completed();" class="flex mx-auto mt-4 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Long Term Task Completed!</button>
+      <div class="flex mt-6 justify-center">
+        <div class="w-48 h-1 rounded-full bg-indigo-500 inline-flex"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-2 mx-auto">
+    <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900">Mini Tasks</h1>
+    </div>
+    <div class="flex flex-wrap -m-2">
+      {% if minitasks|length == 0 %}
+        <h3 class="lg:w-2/3 mx-auto leading-relaxed text-base">NO MINI TASKS PRESENT.. ADD MINI TASKS BELOW!</h3>
+      {% else %}
+      {% for minitask in minitasks %}
+        <div class="xl:w-1/3 md:w-1/2 p-4">
+          {% if minitask.completed == True %}
+          <div class="border border-green-500 p-6 rounded-lg">
+            <a href="/minitask/{{minitask.id}}"><h2 class="text-lg text-green-500 font-medium title-font mb-2">{{minitask.name}} | Completed</h2></a>
+            <p class="leading-relaxed text-green-300">{{minitask.date}}</p>
+            <p class="leading-relaxed text-base">Estimated Time Required - {{minitask.estTimeReq}}</p>
+          </div>
+          {% else %}
+          <div class="border border-gray-400 p-6 rounded-lg">
+            <a href="/minitask/{{minitask.id}}"><h2 class="text-lg text-gray-900 font-medium title-font mb-2">{{minitask.name}}</h2></a>
+            <p class="leading-relaxed text-base">{{minitask.date}}</p>
+            <p class="leading-relaxed text-base">Estimated Time Required - {{minitask.estTimeReq}}</p>
+          </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <button onclick="btn_click();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">ADD MINI TASKS</button>
+  </div>
+</section>
+
+<a href="/add/minitask/{{task.id}}" id="clickable-link" hidden />
+
+<script>
+  function btn_click(){
+    document.getElementById('clickable-link').click();
+  }
+  let id = '{{task.id}}';
+  function btn_click_completed(){
+    $.ajax({
+      url: '/api/longTermTask/completed',
+      type: 'POST',
+      data: {'id': id},
+      success: function(res){
+        if(res.conf == 0){
+          document.getElementById('clickable-link').href= `/show/longTermTasks`;
+          setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+        }else if(res.conf == 1){
+          document.getElementById('clickable-link').href= `/login`;
+          setTimeout(function(){document.getElementById('clickable-link').click();}, 10);
+        }else if(res.conf == 2){
+          alert('COMPLETE ALL MINI TASKS TO BE ABLE TO COMPLETE THIS LONG TERM TASK!');
+        }
+      }
+    })
+  }
+</script>
+
+{% endblock %}

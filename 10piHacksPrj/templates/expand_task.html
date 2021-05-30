@@ -1,4 +1,4 @@
-{% extends 'boiler_plate.html' %}
+{% extends 'b.html' %}
 
 {% block body %}
 
@@ -6,13 +6,17 @@
     <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
     <div class="text-center lg:w-2/3 w-full">
       <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{task_name}}</h1>
-      <h3 id="status-ele" class="text-red-900">Status: NOT STARTED</h3>
-      <h3 class="text-gray-900">Total Duration Of Task: {{task_duration}}</h3>
-      <h3 class="text-gray-900">Task To Be Repeated On: {{task_repitition}}</h3>
+      <h3 id="status-ele" class="mb-4 text-xl text-red-900">Status: NOT STARTED</h3>
+      <h2 id="timer" class="mb-3 text-2xl text-gray-900">Time Left: {{task_duration}}</h2>
+      <h3 class="mb-2 text-xl text-gray-600">Total Duration Of Task: {{task_duration}}</h3>
+      <h3 class="mb-4 text-xl text-gray-900">Task To Be Repeated On: {{task_repitition}}</h3>
       <div class="flex justify-center">
         <button onclick="start_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Start Task</button>
         <button onclick="pause_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Pause Task</button>
         <button onclick="resume_task()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Resume Task</button>
+      </div>
+      <div class="flex justify-center">
+        <button onclick="task_completed()" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 mx-2 my-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">TASK COMPLETED!</button>
       </div>
     </div>
     </div>
@@ -22,6 +26,23 @@
   <script>
     let id = window.location.pathname.replace('/task/', '');
     console.log(id, 'id')
+    let time_left = '{{ time_left }}';
+    let state = Number('{{ state }}');
+    let tl_l = time_left.split(':');
+    let end_time = time_predictor(Number(tl_l[0]), Number(tl_l[1]), Number(tl_l[2]));
+    let break_time = time_predictor(00, 25, 00);
+    let timer_time_left = tl_l;
+    let res_time = [];
+    let break_ = false;
+    console.log(state)
+    console.log(time_left);
+    if(state == 1){
+      document.getElementById('status-ele').innerHTML = 'Status: Started!';
+      document.getElementById('status-ele').className = 'text-green-500';
+    }else if(state == 2){
+      document.getElementById('status-ele').innerHTML = 'Status: Paused!';
+      document.getElementById('status-ele').className = 'text-red-500';
+    }
     function start_task(){
       $.ajax({
         url: '/api/start/task',
@@ -29,6 +50,12 @@
         data: {'id': id},
         success: function(res){
           if(res.conf == 0){
+            state = 1;
+            let time_list = res.time_left.split(':');
+            timer_time_left = time_list;
+            end_time = time_predictor(Number(time_list[0]), Number(time_list[1]), Number(time_list[2]));
+            break_time = time_predictor(00, 1,00);
+            break_ = false;
             document.getElementById('status-ele').innerHTML = 'Status: Started!';
             document.getElementById('status-ele').className = 'text-green-500';
           }else if(res.conf == 1){
@@ -50,6 +77,7 @@
         data: {'id': id},
         success: function(res){
           if(res.conf == 0){
+            state = 2;
             document.getElementById('status-ele').innerHTML = 'Status: Paused!';
             document.getElementById('status-ele').className = 'text-red-500';
           }else if(res.conf == 1){
@@ -74,6 +102,13 @@
         data: {'id': id},
         success: function(res){
           if(res.conf == 0){
+            state = 1;
+            let t_l = res.time_left.split(':')
+            timer_time_left = t_l;
+            end_time = time_predictor(Number(t_l[0]), Number(t_l[1]), Number(t_l[2]));
+            break_time = time_predictor(00, 1,00);
+            break_ = false;
+            console.log(end_time);
             document.getElementById('status-ele').innerHTML = 'Status: Started!';
             document.getElementById('status-ele').className = 'text-green-500';
           }else if(res.conf == 1){
@@ -90,5 +125,140 @@
         }
       })
     }
+    function time_predictor(h, m, s){
+      var text = "";
+
+      var date = new Date();
+      var startHour = date.getHours();
+      var startMinute = date.getMinutes();
+      var startSecond = date.getSeconds();
+
+      class Time
+      {
+          constructor(hours, minutes, seconds)
+          {
+              this.hours = hours;
+              this.minutes = minutes;
+              this.seconds = seconds;
+          }
+      }
+
+      start = new Time(startHour, startMinute, startSecond)
+
+      var task = new Time(h, m, s);
+
+      var estimatedSeconds = start.seconds + task.seconds;
+      var estimatedMinutes = start.minutes + task.minutes;
+      var estimatedHours = start.hours + task.hours;
+
+      if(estimatedSeconds >= 60)
+      {
+          estimatedMinutes += Math.floor(estimatedSeconds / 60);
+          estimatedSeconds = estimatedSeconds % 60;
+      }
+
+      if(estimatedMinutes >= 60)
+      {
+          estimatedHours += Math.floor(estimatedMinutes / 60);
+          estimatedMinutes = estimatedMinutes % 60;
+      }
+
+      function getTime(t)
+      {
+          return [t.hours, t.minutes, t.seconds];
+      }
+
+
+      var estimatedTime = new Time(estimatedHours, estimatedMinutes, estimatedSeconds);
+      return getTime(estimatedTime);
+    }
+    setInterval(function(){
+      if(state == 1){
+        let currD = new Date();
+        let currH = currD.getHours();
+        let currM = currD.getMinutes();
+        let currS = currD.getSeconds();
+        if(currH >= break_time[0] && currM >= break_time[1] && currS >= break_time[2] && break_ == false){
+          res_time = time_predictor(00, 01, 00);
+          break_ = true;
+          let audio = new Audio('/static/shortDing.mp3');
+          setTimeout(function(){alert('TIME FOR BREAK!')},10);
+          audio.play();
+        }
+        if(break_ == true && currH >= res_time[0] && currM >= res_time[1] && currS >= res_time[2]){
+          break_time = time_predictor(00, 25, 00);
+          break_ = false;
+          let audio = new Audio('/static/shortDing.mp3');
+          audio.play();
+          setTimeout(function(){alert('BREAK ENDED!')},10);
+        }
+        let h = Number(timer_time_left[0]);
+        let m = Number(timer_time_left[1]);
+        let s = Number(timer_time_left[2]);
+        s -= 1;
+        if(s < 0){
+          if(h<=0 && m<=0){
+            m = 0;
+            s = 0;
+          }else{
+          m-= 1;
+          s = 60+s;
+        }
+        }
+        if(m < 0 && s<=0){
+          if(h<=0){
+            h = 0;
+            m= 0;
+          }else{
+          h-= 1;
+          m = 60 + m;
+        }
+        }
+        if(h<=0 && m <= 0 && s <= 0){
+          h = 0;
+          m=0;
+          s=0;
+          $.ajax({
+            url: '/api/check/done',
+            type: 'POST',
+            data: {'id': id},
+            success: function(res){
+              if(res.conf == 0){
+                state = 3;
+                let audio = new Audio('/static/longDing.mp3');
+                audio.play();
+                setTimeout(function(){alert('TASK COMPLETE!')},10);
+              }else if(res.conf == 1){
+                let t_l = res.time_left.split(':');
+                end_time = time_predictor(Number(t_l[0]), Number(t_l[1]), Number(t_l[2]));
+              }else if(res.conf == 2){
+                document.getElementById('clickable-link').href="/login";
+                document.getElementById('clickable-link').click();
+              }
+            }
+          })
+        }
+        timer_time_left = [h, m, s];
+        console.log(h,':',m,':',s)
+        document.getElementById('timer').innerHTML = `Time Left: ${h}:${m}:${s}`;
+      }
+    }, 1000);
+    function task_completed(){
+      $.ajax({
+        url: '/api/task/complete',
+        type: 'POST',
+        data: {'id': id},
+        success: function(res){
+          if(res.conf == 0){
+            state = 3;
+            alert('TASK COMPLETE!');
+          }else if(res.conf == 1){
+            document.getElementById('clickable-link').href="/login";
+            document.getElementById('clickable-link').click();
+          }
+        }
+      })
+    }
+
   </script>
 {% endblock %}

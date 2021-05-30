@@ -1,0 +1,12 @@
+{% extends 'b.html' %}
+
+{% block body %}
+
+  25 percentile: {{json.Message['25th Percentile']}}
+  75th Percentile: {{json.Message['75th Percentile']}}
+  Median Income: {{json.Message['Median Income']}}
+
+  Top 5 Colleges: {{json.Message['Top 5 Colleges']}}
+
+  
+{% endblock %}

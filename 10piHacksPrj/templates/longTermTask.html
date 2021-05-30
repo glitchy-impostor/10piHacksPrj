@@ -12,6 +12,11 @@
       <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">{{task.name}}</h1>
       <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Due Date - {{task.date}}</p>
       {% endif %}
+          <button onclick="btn_click_completed();" class="flex mx-auto mt-4 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Long Term Task Completed!</button>
+      <div class="flex mt-6 justify-center">
+        <div class="w-48 h-1 rounded-full bg-indigo-500 inline-flex"></div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -19,9 +24,9 @@
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-2 mx-auto">
     <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Mini Tasks</h1>
+      <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900">Mini Tasks</h1>
     </div>
-    <div class="flex flex-wrap -m-4">
+    <div class="flex flex-wrap -m-2">
       {% if minitasks|length == 0 %}
         <h3 class="lg:w-2/3 mx-auto leading-relaxed text-base">NO MINI TASKS PRESENT.. ADD MINI TASKS BELOW!</h3>
       {% else %}
@@ -44,8 +49,7 @@
       {% endfor %}
       {% endif %}
     </div>
-    <button onclick="btn_click();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">ADD MINI TASKS</button>
-    <button onclick="btn_click_completed();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Long Term Task Completed!</button>
+    <button onclick="btn_click();" class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">LINK MINI TASKS</button>
   </div>
 </section>
 

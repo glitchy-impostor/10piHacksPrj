@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, session, redirect, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_, and_
-import random, math, time, threading, json
+import random, math, time, threading, json, requests
 from datetime import date, datetime, timedelta
 
 app = Flask(__name__)
@@ -514,7 +514,7 @@ def minitask(id):
         t_l = task.estTimeReq.split(':')
         print(days_left)
         hPerDay = int(t_l[0])/days_left
-        mPerDay = int(t_l[1])/days_left        
+        mPerDay = int(t_l[1])/days_left
         print(hPerDay, 'h')
         print(mPerDay, 'm')
         return render_template('minitask.html', task=task, send_list=send_list, name=name)
@@ -631,6 +631,16 @@ def task_complete_api():
         return jsonify({'conf': 0})
     else:
         return jsonify({'conf': 1})
+
+@app.route('/majors', methods=['GET'])
+def majors_page():
+    r = requests.get('http://98.207.110.6/majors')
+    return render_template('majors.html', json=r.json())
+
+@app.route('/major/<name>', methods=['GET'])
+def major_page(name):
+    r = requests.get('http://98.207.110.6/major/?' + name)
+    return render_template('major.html', json=r.json())
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8000, threaded=True)

@@ -48,3 +48,29 @@ var estimatedTime = new Time(estimatedHours, estimatedMinutes, estimatedSeconds)
 text += estimatedTime.getTime();
 
 document.getElementById("time").innerHTML = text;
+
+
+//This part is for the countdown timer.
+var countDownDate = new Date("Jul 25, 2021 " + estimatedTime.getTime).getTime();
+
+var myfunc = setInterval(function(){
+    var now = new Date().getTime();
+    var timeleft = countDownDate - now;
+    var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+    //Display time.
+    document.getElementById("hours").innerHTML = hours + "h " 
+    document.getElementById("mins").innerHTML = minutes + "m " 
+    document.getElementById("secs").innerHTML = seconds + "s"
+
+    if(timeleft < 0){
+        clearInterval(myfunc)
+        document.getElementById("hours").innerHTML = "" 
+        document.getElementById("mins").innerHTML = ""
+        document.getElementById("secs").innerHTML = ""
+        document.getElementById("end").innerHTML = "TIME UP!!";
+        alert("Time is up!");
+    }
+}, 1000)

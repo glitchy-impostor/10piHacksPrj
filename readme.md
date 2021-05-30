@@ -4,7 +4,7 @@ This folder contains the sources and economic data to pick a College Major and t
 
 All data used in this project is from is https://github.com/fivethirtyeight/data/tree/master/college-majors.
 
-Additions were made for top 5 colleges for each major to this data.
+Additions were made for top 5 colleges for each major to each college in this data.
 
 `index.js`
 - Node.js based Web server that reads and returns the economic data.

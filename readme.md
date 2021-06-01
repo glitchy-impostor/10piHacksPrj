@@ -1,4 +1,4 @@
-# College Helper
+# College Manager
 
 This folder contains the sources and economic data to pick a College Major and the top 5 colleges for each major.
 
